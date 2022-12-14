@@ -42,7 +42,7 @@
                         <div class="m-login__signin">
                             <div class="m-login__head">
                                 <h3 class="m-login__title">
-                                    <b>119 PASSOVER CELEBRATION</b><br>ACTIVATOR
+                                    <b>CHRISTMAS 2022</b><br>ACTIVATOR
                                 </h3>
                             </div>
                             @if($message = Session::get('success'))
@@ -79,6 +79,7 @@
                                         <th>No.</th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Ibadah</th>
                                         <th>Code</th>
                                         <!-- <th>Category</th> -->
                                         <th>Status</th>
@@ -92,6 +93,7 @@
                                             echo "<td>".$ct."</td>";
                                             echo "<td>".$item->registrant_name."</td>";
                                             echo "<td>".$item->email."</td>";
+                                            echo "<td>".$item->nama."</td>";
                                             echo "<td>".$item->qr_code."</td>";
                                             // echo "<td>".$item->type."</td>";
                                             if ($item->attend == 1) {
