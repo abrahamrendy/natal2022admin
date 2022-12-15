@@ -34,34 +34,43 @@ class IndexController extends Controller
 
     public function verificator()
     {
-        $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->get();
-        return view('verificator',['data'=>$data]);
+        $active_service = DB::table('settings')->first();
+        $total_activated = DB::table('registrant')->where('ibadah', $active_service->value)->where('attend', 1)->count();
+        $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('ibadah', $active_service->value)->get();
+        return view('verificator',['data'=>$data, 'total_activated' => $total_activated]);
     }
 
     public function scan (Request $request) {
+        $active_service = DB::table('settings')->first();
         $registration_code = strip_tags($request->input('registration_code'));
         $create_date = date('Y-m-d H:i:s' , strtotime('now'));
 
-        $isExist = DB::table('registrant')->where('qr_code',$registration_code)->first();
+        $isExist = DB::table('registrant')->where('qr_code',$registration_code)->where('ibadah', $active_service->value)->first();
 
         if ($isExist) {
             if ($isExist->attend == 0) {
-                // $insertID = DB::table('temp_verification')->insertGetId(
-                //                                     ['registration_code' => $registration_code,
-                //                                      'create_date' => $create_date
-                //                                     ] );
-                DB::table('registrant')->where('qr_code',$isExist->qr_code)->update(
+                DB::table('registrant')->where('id',$isExist->id)->update(
                                                                             [
                                                                              'attend' => '1'
                                                                             ] );
-                \Session::flash('success', $registration_code . ' has been verified!');
+                \Session::flash('success', $registration_code . ' berhasil diverifikasi!');
                 return back();
             } else {
-                \Session::flash('fail', $registration_code .  ' has been scanned before.');
+                \Session::flash('fail', $registration_code .  ' telah diverifikasi sebelumnya.');
                 return back();
             }
         } else {
-            \Session::flash('fail', 'Wrong QR Code!');
+            $temp = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('qr_code',$registration_code)->get();
+            $msg = '';
+            if ($temp) {
+                foreach ($temp as $value) {
+                    $msg .= "<br>Nama: ".$value->registrant_name."<br>";
+                    $msg .= "Tempat Ibadah: ".$value->nama;
+                }
+                \Session::flash('fail', $msg);
+            } else {
+                \Session::flash('fail', 'QR Code tidak terdaftar!');
+            }
             return back();
         }
     }

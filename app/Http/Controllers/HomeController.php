@@ -24,7 +24,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->get();
-        return view('home',['data'=>$data]);
+        $data = DB::table('settings')->get();
+        $ibadah = DB::table('ibadah')->get();
+        return view('home',['data'=>$data, 'ibadah'=>$ibadah]);
+    }
+
+    public function settings()
+    {
+        $data = DB::table('ibadah')->orderBy('nama')->get();
+        return view('settings',['data'=>$data]);
+    }
+
+    public function submit_ibadah( Request $request ) {
+        $id = $request->input('id');
+        $active_service = $request->input('active_service');
+
+        DB::table('settings')->where('id',$id)->update(
+                                                    [
+                                                     'value' => $active_service
+                                                    ] );
+        return redirect('admin/')->with('success','Berhasil melakukan edit ibadah aktif!');
     }
 }

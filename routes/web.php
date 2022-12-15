@@ -33,4 +33,8 @@ Route::prefix('user')->group(function () {
 
 Auth::routes();
 
-Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('admin')->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/settings', [App\Http\Controllers\HomeController::class, 'settings'])->name('settings');
+    Route::post('/submit_ibadah', [App\Http\Controllers\HomeController::class, 'submit_ibadah'])->name('submit_ibadah');
+});

@@ -27,12 +27,8 @@
                   <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
-                        <th>E-mail</th>
-                        <th>No. HP</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Ibadah</th>
-                        <th>QR Code</th>
+                        <th>Name</th>
+                        <th>Value</th>
                         <th>Action</th>
                     </tr>
                   </thead>
@@ -41,15 +37,24 @@
                         $ct = 1;
                         if (isset($data)) {
                             foreach ($data as $item) {
-                                echo "<tr><td>".$ct."</td>";
-                                echo "<td>".$item->registrant_name."</td>";
-                                echo "<td>".$item->email."</td>";
-                                echo "<td>".$item->phone."</td>";
-                                echo "<td>".$item->dob."</td>";
-                                echo "<td>".$item->nama."</td>";
-                                echo "<td style='text-align:center'><img src='".asset('img/qrcodes/'.$item->qr_code.'.jpg')."' width='50%' style='background-color:white; padding: 10px' alt=".$item->qr_code."></img><br>".$item->qr_code."</td>";
-                                echo "<td>"."</td>";
-                                echo '</tr>';
+                                echo "<form method='POST' action='".route('submit_ibadah')."'><tr><td>".$ct."</td>";
+                    ?>
+                    @csrf
+                    <?php
+                                echo "<td>".$item->name."</td>";
+                                echo '<td><select class="form-select" name="active_service" size="4" aria-label="size 4 select" style="width:100%">';
+                                foreach ($ibadah as $tempIbadah) {
+                                    if ($item->value == $tempIbadah->id) {
+                                        $selected = "selected";
+                                    } else {
+                                        $selected = "";
+                                    }
+                                    echo "<option value='".$tempIbadah->id."' ".$selected.">".$tempIbadah->nama."</option>";
+                                }
+                                echo "</select></td>";
+                                echo "<td style ='text-align:center'><button type = 'submit' class='btn btn-primary'>Submit"."</button></td>";
+                                echo "<input type='hidden' value=".$item->id." name='id'>";
+                                echo '</tr></form>';
                                 $ct++;
                             }
                         }
@@ -58,12 +63,8 @@
                   <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
-                        <th>E-mail</th>
-                        <th>No. HP</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Ibadah</th>
-                        <th>QR Code</th>
+                        <th>Name</th>
+                        <th>Value</th>
                         <th>Action</th>
                     </tr>
                   </tfoot>
@@ -79,41 +80,5 @@
 
 @section('js')
     <script>
-        $(function () {
-            $("#example1").DataTable({
-              "responsive": true, "lengthChange": false, "autoWidth": false,
-              "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-              "paging": true,
-              "lengthChange": false,
-              "searching": false,
-              "ordering": true,
-              "info": true,
-              "autoWidth": false,
-              "responsive": true,
-            });
-          });
-
-        $( ".datepicker" ).daterangepicker({
-          singleDatePicker: true,
-          timePicker: true,
-          timePicker24Hour: true,
-          showDropdowns: true,
-          drops: "auto",
-          locale: {
-            format: 'DD-MM-YYYY HH:mm'
-          }
-        });
-
-        $( ".singledatepicker" ).daterangepicker({
-          autoApply: true,
-          singleDatePicker: true,
-          showDropdowns: true,
-          drops: "auto",
-          locale: {
-            format: 'DD-MM-YYYY'
-          }
-        });
     </script>
 @stop

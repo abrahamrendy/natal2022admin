@@ -44,6 +44,9 @@
                                 <h3 class="m-login__title">
                                     <b>CHRISTMAS 2022</b><br>ACTIVATOR
                                 </h3>
+                                <h4 class="text-center">
+                                    Total Activated: {{ $total_activated }}
+                                </h4>
                             </div>
                             @if($message = Session::get('success'))
                                 <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem;">
@@ -58,7 +61,7 @@
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                   </button>
-                                  <strong>Fail!</strong> {{ $message }}
+                                  <strong>Fail!</strong> <?php echo $message;?>
                                 </div>
                             @endif
                             <form class="m-login__form m-form" action="{{ route('temp_verify') }}" method="POST">

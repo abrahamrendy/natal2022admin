@@ -195,15 +195,7 @@
 
     <div>
         <div class="col-sm-10 pt-4">
-            <?php 
-                if (session('currUser')) {
-                    $currUser = session('currUser');
-            ?>
-                    <a href="{{ route ('user')}}" class = "float-right btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" style="font-weight: 400" href="#">Hi, {{ $currUser->nama }}!</a>
-                    <a href="{{ route ('index')}}" class = "float-right btn btn-primary m-btn m-btn--pill m-btn--custom m-btn--air" style="font-weight: 400; margin-right: 10px;" href="#">HOME</a>
-            <?php } else { ?>
-                    <a class="float-right btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" style="font-weight: 400" href="#" data-toggle="modal" data-target="#login-modal">LOGIN</a>
-            <?php } ?>
+
         </div>
     </div>
 </body>
