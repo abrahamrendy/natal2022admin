@@ -34,10 +34,10 @@ class IndexController extends Controller
 
     public function verificator()
     {
-        $active_service = DB::table('settings')->first();
+        $active_service = DB::table('settings')->join('ibadah', 'settings.value', '=', 'ibadah.id')->first();
         $total_activated = DB::table('registrant')->where('ibadah', $active_service->value)->where('attend', 1)->count();
         $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('ibadah', $active_service->value)->get();
-        return view('verificator',['data'=>$data, 'total_activated' => $total_activated]);
+        return view('verificator',['data'=>$data, 'total_activated' => $total_activated, 'active_service'=> $active_service]);
     }
 
     public function scan (Request $request) {
@@ -45,7 +45,7 @@ class IndexController extends Controller
         $registration_code = strip_tags($request->input('registration_code'));
         $create_date = date('Y-m-d H:i:s' , strtotime('now'));
 
-        $isExist = DB::table('registrant')->where('qr_code',$registration_code)->where('ibadah', $active_service->value)->first();
+        $isExist = DB::table('registrant')->where('qr_code',$registration_code)->where('ibadah', $active_service->value)->where('attend',0)->first();
 
         if ($isExist) {
             if ($isExist->attend == 0) {
@@ -64,10 +64,17 @@ class IndexController extends Controller
             $msg = '';
             if ($temp) {
                 foreach ($temp as $value) {
-                    $msg .= "<br>Nama: ".$value->registrant_name."<br>";
-                    $msg .= "Tempat Ibadah: ".$value->nama;
+                    if (($value->ibadah == $active_service->value) && $value->attend == 1){
+                        $type = 'fail';
+                        $msg = $registration_code . ' telah diverifikasi sebelumnya.';
+                        // dd($type);
+                    } else {
+                        $type = 'wrong';
+                        $msg .= "<br>Nama: ".$value->registrant_name."<br>";
+                        $msg .= "Tempat Ibadah: ".$value->nama;
+                    }
                 }
-                \Session::flash('fail', $msg);
+                \Session::flash($type, $msg);
             } else {
                 \Session::flash('fail', 'QR Code tidak terdaftar!');
             }

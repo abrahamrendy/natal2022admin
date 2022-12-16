@@ -15,6 +15,12 @@
                 border-color: #453939;
             }
 
+            .alert-warning {
+                color: #856404 !important;
+                background-color: #fff3cd !important;
+                border-color: #ffeeba !important;
+            }
+
             @media (max-width: 768px) {
                 .left-side-bg {
                      background-position: center; 
@@ -45,11 +51,14 @@
                                     <b>CHRISTMAS 2022</b><br>ACTIVATOR
                                 </h3>
                                 <h4 class="text-center">
+                                  {{ $active_service->nama }}
+                                </h4>
+                                <h4 class="text-center">
                                     Total Activated: {{ $total_activated }}
                                 </h4>
                             </div>
                             @if($message = Session::get('success'))
-                                <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem;">
+                                <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem; font-size: 1.5rem">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                   </button>
@@ -57,7 +66,15 @@
                                 </div>
                             @endif
                             @if($message = Session::get('fail'))
-                                <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem;">
+                                <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem; font-size: 1.5rem">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                                  <strong>Fail!</strong> <?php echo $message;?>
+                                </div>
+                            @endif
+                            @if($message = Session::get('wrong'))
+                                <div class="alert alert-warning alert-dismissible" role="alert" style="margin-top: 2rem; margin-bottom: -2rem; font-size: 1.5rem">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                   </button>
