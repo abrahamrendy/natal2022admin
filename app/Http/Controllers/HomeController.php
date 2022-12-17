@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $data = DB::table('settings')->get();
-        $ibadah = DB::table('ibadah')->get();
+        $ibadah = DB::table('ibadah')->orderBy('nama')->get();
         return view('home',['data'=>$data, 'ibadah'=>$ibadah]);
     }
 
