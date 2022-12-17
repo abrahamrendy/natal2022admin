@@ -63,7 +63,7 @@ class IndexController extends Controller
             $temp = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('qr_code',$registration_code)->get();
             $msg = '';
             $type = '';
-            if ($temp) {
+            if (!$temp->isEmpty()) {
                 foreach ($temp as $value) {
                     if (($value->ibadah == $active_service->value) && $value->attend == 1){
                         $type = 'fail';
