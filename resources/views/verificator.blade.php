@@ -81,10 +81,10 @@
                                   <strong>Fail!</strong> <?php echo $message;?>
                                 </div>
                             @endif
-                            <form class="m-login__form m-form" action="{{ route('temp_verify') }}" method="POST">
+                            <form id="verificator" class="m-login__form m-form" action="{{ route('temp_verify') }}" method="POST">
                                 @csrf
                                 <div class="form-group m-form__group">
-                                    <input class="form-control m-input" type="text" placeholder="CODE" name="registration_code" required autofocus >
+                                    <input class="form-control m-input" id="registration_code" type="text" placeholder="CODE" name="registration_code" required autofocus >
                                 </div>
                                 <div class="m-login__form-action">
                                     <button type ="submit" id="submit-btn" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air" style="font-weight: 400">
@@ -141,6 +141,11 @@
     <script>
         $(document).ready( function () {
             $('#table_id').DataTable();
+
+            $('#verificator').submit(function(){
+                $(this).find('#registration_code').prop('readonly',true);
+                $(this).find('#submit-btn').prop('disabled', true);
+            });
         } );
     </script>
 </html>
