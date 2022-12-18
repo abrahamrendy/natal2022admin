@@ -36,7 +36,8 @@ class IndexController extends Controller
     {
         $active_service = DB::table('settings')->join('ibadah', 'settings.value', '=', 'ibadah.id')->first();
         $total_activated = DB::table('registrant')->where('ibadah', $active_service->value)->where('attend', 1)->count();
-        $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('ibadah', $active_service->value)->get();
+        // $data = DB::table('registrant')->join('ibadah', 'registrant.ibadah', '=', 'ibadah.id')->select('registrant.id as registrant_id', 'registrant.nama as registrant_name', 'registrant.*', 'ibadah.*')->orderBy('registrant.id', 'desc')->where('ibadah', $active_service->value)->get();
+        $data = DB::table('registrant')->orderBy('registrant.id', 'asc')->where('ibadah', $active_service->value)->get();
         return view('verificator',['data'=>$data, 'total_activated' => $total_activated, 'active_service'=> $active_service]);
     }
 
@@ -78,6 +79,23 @@ class IndexController extends Controller
                 }
                 \Session::flash($type, $msg);
             } else {
+                $id = DB::table('registrant')->insertGetId(
+                                                ['kaj' => '000',
+                                                 'nama' => 'anom',
+                                                 'email' => 'anom',
+                                                 'phone' => '0000',
+                                                 'dob' => $create_date,
+                                                 'm-class' => '0',
+                                                 'ibadah_asal' => '0',
+                                                 'qr_code' => $registration_code,
+                                                 'ibadah' => $active_service->value,
+                                                 'created_at' => $create_date,
+                                                 'attend' => '1',
+                                                ] );
+                if ($id) {
+                    \Session::flash('success', 'QR Code '.$registration_code.' terdaftar!');
+                    return back();
+                }
                 \Session::flash('fail', 'QR Code tidak terdaftar!');
             }
             return back();

@@ -99,7 +99,7 @@
                                         <th>No.</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Ibadah</th>
+                                        <!-- <th>Ibadah</th> -->
                                         <th>Code</th>
                                         <!-- <th>Category</th> -->
                                         <th>Status</th>
@@ -111,9 +111,9 @@
                                         foreach ($data as $item) {
                                             echo "<tr>";
                                             echo "<td>".$ct."</td>";
-                                            echo "<td>".$item->registrant_name."</td>";
-                                            echo "<td>".$item->email."</td>";
                                             echo "<td>".$item->nama."</td>";
+                                            echo "<td>".$item->email."</td>";
+                                            // echo "<td>".$item->nama."</td>";
                                             echo "<td>".$item->qr_code."</td>";
                                             // echo "<td>".$item->type."</td>";
                                             if ($item->attend == 1) {
