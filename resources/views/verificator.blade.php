@@ -147,7 +147,7 @@
                 $(this).find('#submit-btn').prop('disabled', true);
                 var inp = $('#registration_code').val();
                 console.log(inp.length);
-                if (inp.length > 12) {
+                if (inp.length > 10) {
                     console.log('sad');
                     alert("Mohon hanya melakukan scan sekali saja. Silakan coba lagi.");
                     e.preventDefault();
