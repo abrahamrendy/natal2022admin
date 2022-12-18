@@ -43,7 +43,7 @@ class IndexController extends Controller
     public function scan (Request $request) {
         $active_service = DB::table('settings')->first();
         $registration_code = strip_tags($request->input('registration_code'));
-        $create_date = date('Y-m-d H:i:s' , strtotime('now'));
+        $create_date = date('Y-m-d H:i:s' , strtotime('now + 7 hours'));
 
         $isExist = DB::table('registrant')->where('qr_code',$registration_code)->where('ibadah', $active_service->value)->where('attend',0)->first();
 
@@ -51,12 +51,13 @@ class IndexController extends Controller
             if ($isExist->attend == 0) {
                 DB::table('registrant')->where('id',$isExist->id)->update(
                                                                             [
-                                                                             'attend' => '1'
+                                                                             'attend' => '1',
+                                                                             'updated_at' => $create_date
                                                                             ] );
                 \Session::flash('success', $registration_code . ' berhasil diverifikasi!');
                 return back();
             } else {
-                \Session::flash('fail', $registration_code .  ' telah diverifikasi sebelumnya.');
+                \Session::flash('fail', $registration_code .  ' telah diverifikasi pada ', $create_date);
                 return back();
             }
         } else {
@@ -67,7 +68,7 @@ class IndexController extends Controller
                 foreach ($temp as $value) {
                     if (($value->ibadah == $active_service->value) && $value->attend == 1){
                         $type = 'fail';
-                        $msg = $registration_code . ' telah diverifikasi sebelumnya.';
+                        $msg = $registration_code . ' telah diverifikasi sebelumnya pada: ' . $value->updated_at;
                         // dd($type);
                     } else {
                         $type = 'wrong';
