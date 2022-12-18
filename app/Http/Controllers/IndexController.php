@@ -68,7 +68,7 @@ class IndexController extends Controller
                 foreach ($temp as $value) {
                     if (($value->ibadah == $active_service->value) && $value->attend == 1){
                         $type = 'fail';
-                        $msg = $registration_code . ' telah diverifikasi sebelumnya pada: ' . $value->updated_at;
+                        $msg = "<br>".$registration_code . ' telah diverifikasi sebelumnya pada: ' . $value->updated_at."<br>";
                         // dd($type);
                     } else {
                         $type = 'wrong';
