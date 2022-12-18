@@ -142,9 +142,17 @@
         $(document).ready( function () {
             $('#table_id').DataTable();
 
-            $('#verificator').submit(function(){
+            $('#verificator').submit(function(e){
                 $(this).find('#registration_code').prop('readonly',true);
                 $(this).find('#submit-btn').prop('disabled', true);
+                var inp = $('#registration_code').val();
+                console.log(inp.length);
+                if (inp.length > 12) {
+                    console.log('sad');
+                    alert("Mohon hanya melakukan scan sekali saja. Silakan coba lagi.");
+                    e.preventDefault();
+                    location.reload();
+                }
             });
         } );
     </script>
