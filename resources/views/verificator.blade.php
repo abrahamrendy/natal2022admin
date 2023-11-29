@@ -48,7 +48,7 @@
                         <div class="m-login__signin">
                             <div class="m-login__head">
                                 <h3 class="m-login__title">
-                                    <b>CHRISTMAS 2022</b><br>ACTIVATOR
+                                    <b>CHRISTMAS <?php echo date('Y', strtotime('now'))?></b><br>ACTIVATOR
                                 </h3>
                                 <h4 class="text-center">
                                   {{ $active_service->nama }}
@@ -98,10 +98,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Name</th>
-                                        <th>Email</th>
-                                        <!-- <th>Ibadah</th> -->
                                         <th>Code</th>
-                                        <!-- <th>Category</th> -->
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -112,10 +109,7 @@
                                             echo "<tr>";
                                             echo "<td>".$ct."</td>";
                                             echo "<td>".$item->nama."</td>";
-                                            echo "<td>".$item->email."</td>";
-                                            // echo "<td>".$item->nama."</td>";
                                             echo "<td>".$item->qr_code."</td>";
-                                            // echo "<td>".$item->type."</td>";
                                             if ($item->attend == 1) {
                                                 echo "<td><span class='badge badge-success'>Attended</span></td>";
                                             } else {
@@ -147,7 +141,7 @@
                 $(this).find('#submit-btn').prop('disabled', true);
                 var inp = $('#registration_code').val();
                 console.log(inp.length);
-                if (inp.length > 10) {
+                if (inp.length > 24) {
                     console.log('sad');
                     alert("Mohon hanya melakukan scan sekali saja. Silakan coba lagi.");
                     e.preventDefault();
