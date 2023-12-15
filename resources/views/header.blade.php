@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>GBI Sukawarna Christmas 2022 Registration</title>
+    <title>GBI Sukawarna Christmas <?php echo date('Y', strtotime('now'))?> Registration</title>
 
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
